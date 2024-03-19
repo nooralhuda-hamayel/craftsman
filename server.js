@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "craftsman"
+    database: "comm_craft"
 })
 
 app.get('/', (req, res) => {
