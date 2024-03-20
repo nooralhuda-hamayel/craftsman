@@ -14,3 +14,4 @@ Steps to run the project locally:
 
 # Notes:
 1) Branch name reflects the added/changed functionallity, for example `create-user-apis`
+2) Every change must be merged by pull request
