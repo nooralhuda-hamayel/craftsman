@@ -8,6 +8,7 @@ const app = express();
 
 const userRouter = require('./routes/userRoutes');
 const resRouter = require('./routes/resRoutes');
+const collaborationsRoutes = require('./routes/collaborations.routes');
 
 
 
@@ -19,6 +20,7 @@ app.use(express.json());
 // all Routes here
 app.use('/api/users', userRouter);
 app.use('/api/resources', resRouter);
+app.use('/api/collaborations', collaborationsRoutes);
 
 
 

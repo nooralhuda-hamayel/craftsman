@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2024 at 09:32 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.1.17
+-- Generation Time: Mar 22, 2024 at 12:12 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,15 +24,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `collabration`
+-- Table structure for table `collaborations`
 --
 
-CREATE TABLE `collabration` (
-  `ColabID` int(50) NOT NULL,
-  `ProjectID` int(50) NOT NULL,
-  `userID` int(50) NOT NULL,
-  `Status` varchar(255) NOT NULL,
-  `Time` varchar(255) NOT NULL
+CREATE TABLE `collaborations` (
+  `collaboration_id` int(50) NOT NULL,
+  `project_id` int(50) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `time` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `collaborations_users`
+--
+
+CREATE TABLE `collaborations_users` (
+  `collaboration_user_id` int(11) NOT NULL,
+  `collaboration_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -126,7 +137,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`UserID`, `Username`, `Password`, `Email`, `FullName`, `Bio`, `Locations`, `Birthdate`, `Gender`, `Phone`, `SocialLinks`) VALUES
 (1, 'dima', '123', 'd@gmail.com', 'dima ', 'hi, ', 'Nablus', '11-10', 'femal', 5487, 'jhfyurnv'),
 (2, 'MARK8', '$2b$10$6Hsm4EVfus5CRj4VLJcqIObC5.JgS8xtiatmsAWPJxk.GsDfAhKbi', 'ghy', 'Mark Sam', 'Designer', 'NewYork', '11/8', 'Male', 578, 'what'),
-(3, 'sally', '$2b$10$ok9on20z9RycO6gceC/g0.GOhGCHDJIXiJgQzkLnJDz5IylanXji6', 'sa.@g', 'sally Sam', 'Designer', 'NewYork', '11/8', 'femal', 578, 'what');
+(3, 'sally', '$2b$10$ok9on20z9RycO6gceC/g0.GOhGCHDJIXiJgQzkLnJDz5IylanXji6', 'sa.@g', 'sally Sam', 'Designer', 'NewYork', '11/8', 'femal', 578, 'what'),
+(4, 'noor', '$2b$10$gtXo0wiDStwOuvA0gYSr1.OR0OAymev/GJFtwu4nfXA.AQ9iKF1sS', 'noor@mail.com', 'noor', 'bio', 'baita', '07-04-2002', 'Female', 598989898, 'site.com');
 
 -- --------------------------------------------------------
 
@@ -147,10 +159,16 @@ CREATE TABLE `user_res_book` (
 --
 
 --
--- Indexes for table `collabration`
+-- Indexes for table `collaborations`
 --
-ALTER TABLE `collabration`
-  ADD PRIMARY KEY (`ColabID`);
+ALTER TABLE `collaborations`
+  ADD PRIMARY KEY (`collaboration_id`);
+
+--
+-- Indexes for table `collaborations_users`
+--
+ALTER TABLE `collaborations_users`
+  ADD PRIMARY KEY (`collaboration_user_id`);
 
 --
 -- Indexes for table `material`
@@ -189,10 +207,22 @@ ALTER TABLE `user_res_book`
 --
 
 --
+-- AUTO_INCREMENT for table `collaborations`
+--
+ALTER TABLE `collaborations`
+  MODIFY `collaboration_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `collaborations_users`
+--
+ALTER TABLE `collaborations_users`
+  MODIFY `collaboration_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `UserID` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_res_book`
