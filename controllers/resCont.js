@@ -132,3 +132,67 @@ exports.getAllRes = (req, res) => {
         res.status(200).json(results);
     });
 };
+
+exports.showRes = (req, res) => {
+    // Check if the user object is present in the request
+    // This is redundant if checkLoggedIn middleware is used correctly
+    if (!req.user) {
+        return res.status(401).json({ message: 'Please log in to access this operation.' });
+    }
+
+    // Query to select all resources from the database
+    const sql = 'SELECT * FROM material';
+
+    // Execute the query
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error retrieving resources from the database:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+
+        // If no resources are found, return a 404 error
+        if (results.length === 0) {
+            res.status(404).json({ error: 'No resources found' });
+            return;
+        }
+
+        // Return the retrieved resources
+        res.status(200).json(results);
+    });
+};
+
+exports.searchMaterialByName = (req, res) => {
+    // Extract query parameter for the material name
+    const name = req.query.name;
+
+    if (!name) {
+        return res.status(400).json({ message: 'Material name is required for searching.' });
+    }
+
+    // Prepare the search term by making it case-insensitive and ignoring spaces.
+    const searchTerm = `%${name.replace(/\s+/g, '').toLowerCase()}%`;
+
+    // SQL Query to search for materials by name, making the comparison case-insensitive
+    // and ignoring spaces within the database column values as well.
+    const sql = `
+        SELECT * 
+        FROM material 
+        WHERE REPLACE(LOWER(MaterialName), ' ', '') LIKE ?
+    `;
+
+    connection.query(sql, [searchTerm], (err, results) => {
+        if (err) {
+            console.error('Error searching materials in the database:', err);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).json({ message: 'No materials found matching the given name.' });
+            return;
+        }
+
+        res.status(200).json(results);
+    });
+};
