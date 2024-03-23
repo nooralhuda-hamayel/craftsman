@@ -129,4 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+database/db_creation/comm_craft.sql
+schedulers/emailNotificationService.js
+
 .vscode/
