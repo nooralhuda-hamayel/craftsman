@@ -6,8 +6,8 @@ const connection = require('../database/connection'); // Ensure this path is cor
 const transporter = nodemailer.createTransport({
     service: 'gmail', // or your specific email service
     auth: {
-      user: 'dima.eid11@gmail.com',
-      pass: 'gyaf ftmw hbpy qilr'
+      user: '',
+      pass: ''
     },
     tls: {
       // Do not fail on invalid certs
