@@ -8,5 +8,7 @@ const collaborationsController = require('../controllers/collaborations.controll
 router.post('/', verifyToken, checkLoggedIn, collaborationsController.createCollaboration)
 router.get('/', verifyToken, checkLoggedIn, collaborationsController.getLoggedInUserCollaborations)
 router.get('/:id', verifyToken, checkLoggedIn, collaborationsController.getLoggedInUserCollaborationById)
+router.patch('/:id', verifyToken, checkLoggedIn, collaborationsController.updateLoggedInUserCollaborationById)
+router.delete('/:id/withdraw', verifyToken, checkLoggedIn, collaborationsController.withdrawFromCollaboration)
 
 module.exports = router;

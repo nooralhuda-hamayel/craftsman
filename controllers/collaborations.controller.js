@@ -75,7 +75,7 @@ exports.getLoggedInUserCollaborationById = (req, res) => {
             res.status(500).json({ error: err });
             return;
         }
-        if (!count) {
+        if (!count['COUNT(*)']) {
             res.status(500).json({ error: "You are not in this collaboration, id=" + collaborationId });
             return;
         }
@@ -93,3 +93,102 @@ exports.getLoggedInUserCollaborationById = (req, res) => {
 
     });
 }
+
+
+
+exports.updateLoggedInUserCollaborationById = (req, res) => {
+    const collaborationId = req.params.id;
+    const userId = req.user.id;
+
+    const sqlQuery = 'SELECT COUNT(*) FROM collaborations_users WHERE collaboration_id = ? AND user_id = ?';
+
+    connection.query(sqlQuery, [collaborationId, userId], (err, count) => {
+        if (err) {
+            res.status(500).json({ error: err });
+            return;
+        }
+        if (!count['COUNT(*)']) {
+            res.status(500).json({ error: "You are not in this collaboration, id=" + collaborationId });
+            return;
+        }
+
+        const { time, status } = req.body;
+
+        const updatedParts = [];
+
+        if (time) {
+            updatedParts.push("time='" + time + "'");
+        }
+
+        if (status) {
+            updatedParts.push("status='" + status + "'");
+        }
+
+        if (updatedParts.length) {
+            const sqlQuery = 'UPDATE collaborations SET ' + updatedParts.join(', ') + ' WHERE collaboration_id=' + collaborationId;
+
+            connection.query(sqlQuery, [], (err, result) => {
+                if (err) {
+                    res.status(500).json({ error: err });
+                    return;
+                }
+
+                res.status(200).json({ message: 'Collaboration updated successfully' })
+            });
+        }
+
+    });
+}
+
+
+deleteCollaboration = (collaborationId) => {
+    const sqlQuery = 'DELETE FROM collaborations WHERE collaboration_id = ?';
+
+    return connection.query(sqlQuery, [collaborationId], (err, res) => {
+        return {
+            err, res
+        }
+
+    });
+}
+
+exports.withdrawFromCollaboration = (req, res) => {
+    const collaborationId = req.params.id;
+    const userId = req.user.id;
+
+    const sqlQuery = 'DELETE FROM collaborations_users WHERE collaboration_id = ? AND user_id = ?';
+
+    connection.query(sqlQuery, [collaborationId, userId], (err, count) => {
+        if (err) {
+            res.status(500).json({ error: err });
+            return;
+        }
+
+        console.log('here');
+
+        const sqlQuery = 'SELECT COUNT(*) FROM collaborations_users WHERE collaboration_id = ?';
+
+        connection.query(sqlQuery, [collaborationId], (err, count) => {
+            if (err) {
+                res.status(500).json({ error: err });
+                return;
+            }
+            if (count['COUNT(*)']) {
+                res.status(200).json({ message: 'Withdraw successfully' });
+                return;
+            }
+
+            const results = deleteCollaboration(collaborationId);
+            if (results.err) {
+                res.status(500).json({ error: results.err });
+            }
+            else {
+                res.status(200).json({ message: 'Withdraw successfully' });
+            }
+            return
+
+        });
+
+    });
+}
+
