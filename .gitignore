@@ -129,4 +129,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+database/db_creation/*.sql
+
 .vscode/
